@@ -1,0 +1,26 @@
+!yamlscript/v0
+
+ns: rest-api
+
+config =: yaml/load-file('config.yaml')
+
+api-url =:: https://api.stackexchange.com/2.3
+site =:: stackoverflow
+access-token =: config.access-token
+key =: config.request-key
+
+defn get(route):
+  response =:
+    url =: "$api-url/$route?site=$site\
+            &access_token=$access-token&key=$key"
+    try:
+      http/get: url
+      catch e:
+        e =: ex-data(e)
+        say:
+          yaml/dump::
+            status:: e.status
+            body:: e
+        exit: 1
+
+  json/load: response.body

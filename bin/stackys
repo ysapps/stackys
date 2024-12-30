@@ -1,0 +1,9 @@
+#!/usr/bin/env ys-0
+
+use: rest-api
+# require rest-api: => rest
+
+answers =: rest-api/get('answers')
+
+say:
+  yaml/dump: answers
